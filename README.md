@@ -1,15 +1,14 @@
-# 🌡️ IoT Environment Monitoring with ESP32 & Node-RED
+# 🌡️ IoT Environment Monitoring 
 
-**My IoT environment monitoring project using ESP32, DHT22, Node-RED, InfluxDB, and Grafana.**  
+**My IoT environment monitoring project using ESP32, DHT22, Node-RED, InfluxDB, AWS, and Grafana.**  
 This system monitors **temperature 🌡️ and humidity 💧** using the **DHT22 sensor**.  
-The **ESP32 ⚙️** sends data to **Node-RED 🧠** via **MQTT 🔗**, where a **visual dashboard 📊** displays readings in real time. Data is stored in **InfluxDB** and **AWS DynamoDB**, and processed by **AWS Lambda** for automation.
+The **ESP32 ⚙️** sends data via **MQTT 🔗** to **Node-RED 🧠**, where the data is forwarded to **AWS Lambda** and stored in **InfluxDB** and **AWS DynamoDB** for automation and analysis.  
 
 ---
 
-## 🧠 Smart Logic in Node-RED
-Inside Node-RED, smart automation rules are implemented:
-- 💡 **Turn on an LED** when temperature exceeds 30°C.  
-- 🔔 **Trigger alerts or Lambda functions** when thresholds are exceeded.
+## 🧠 Smart Logic
+- 💡 **Turn on/off an LED** is fully controlled by **AWS Lambda** functions based on temperature thresholds (>30°C).  
+- 🔔 **Data is processed and exposed via RESTful API** for external applications or dashboards.  
 
 ---
 
@@ -22,6 +21,7 @@ Inside Node-RED, smart automation rules are implemented:
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat&logo=amazon-aws&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
 ![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=c%2B%2B&logoColor=white)
+![REST API](https://img.shields.io/badge/REST-0078D4?style=flat&logo=rest&logoColor=white)
 ![VSCode](https://img.shields.io/badge/VS_Code-0078D4?style=flat&logo=visual%20studio%20code&logoColor=white)
 
 ---
@@ -29,23 +29,25 @@ Inside Node-RED, smart automation rules are implemented:
 ## 🧰 Technologies Used
 | Component | Description |
 |------------|-------------|
-| ⚙️ **ESP32** | Main microcontroller |
+| ⚙️ **ESP32** | Main microcontroller sending sensor data |
 | 🌡️ **DHT22** | Temperature & Humidity Sensor |
 | 🔗 **MQTT** | Communication protocol |
-| 🧠 **Node-RED** | IoT flow-based programming tool |
-| 📊 **Dashboard** | Real-time visualization |
-| ☁️ **AWS Lambda** | Cloud processing & automation |
-| 💾 **InfluxDB** | Time-series database |
-| 📈 **Grafana** | Dashboard & data visualization |
+| 🧠 **Node-RED** | Flow-based processing to forward data |
+| ☁️ **AWS Lambda** | Cloud automation controlling LED and processing data |
+| 💾 **InfluxDB** | Time-series database for sensor storage |
+| 📈 **Grafana** | Dashboard & data visualization from InfluxDB |
+| 🌐 **RESTful API** | Expose processed data for external applications |
 
 ---
 
 ## 🚀 How It Works
 1. ESP32 reads temperature and humidity from the DHT22 sensor.  
 2. Data is sent via **MQTT** to **Node-RED**.  
-3. Node-RED displays readings on a **real-time dashboard** and sends data to **InfluxDB** and **AWS DynamoDB**.  
-4. **AWS Lambda** processes data; for example, LED turns on if temperature >30°C.  
-5. **Grafana** fetches data from InfluxDB for rich visualization.
+3. Node-RED forwards data to **AWS Lambda** for processing.  
+4. **AWS Lambda** controls the LED if temperature exceeds 30°C.  
+5. Sensor data is stored in **InfluxDB** and **AWS DynamoDB**.  
+6. **RESTful API** exposes the data for dashboards or external applications.  
+7. **Grafana** visualizes the stored data from InfluxDB.
 
 ---
 
@@ -53,24 +55,13 @@ Inside Node-RED, smart automation rules are implemented:
 | File | Description |
 |------|--------------|
 | `wokwi/esp32_MQTT_NODE.zip` | ESP32 circuit and code |
-| `node_red_flow/flows.json` | Node-RED dashboard and automation flow |
-| `AWS/lambda_function_control_led.py` | Lambda to control LED |
-| `AWS/lambda__handle_API_getway.py` | Lambda for API Gateway processing |
+| `node_red_flow/flows.json` | Node-RED flow for forwarding MQTT data |
+| `AWS/lambda_function_control_led.py` | Lambda to control LED based on thresholds |
+| `AWS/lambda__handle_API_getway.py` | Lambda for RESTful API handling |
 | `images/influxdb_table.png` | InfluxDB table screenshot |
 | `images/influxdb_dashboard.png` | InfluxDB dashboard screenshot |
 | `images/grafana_dashboard.png` | Grafana dashboard screenshot |
 | `README.md` | Project documentation |
-
----
-
-## 🧩 Importing the Flow in Node-RED
-To use the provided flow (`flows.json`):
-
-1. Open **Node-RED** → usually at `http://localhost:1880`  
-2. Click the **menu (☰)** → **Import → Clipboard**  
-3. Paste JSON content from `node_red_flow/flows.json`  
-4. Click **Import**, then **Deploy**  
-5. Open your **dashboard** tab to view live data 📊  
 
 ---
 
